@@ -4,7 +4,10 @@ using System.Text;
 
 namespace PoS.DataAccess.Data.Repository.iRepository
 {
-    public interface IUnitofWork
+    public interface IUnitofWork: IDisposable
     {
+        ICategory Category { get; }
+
+        void Save();
     }
 }
