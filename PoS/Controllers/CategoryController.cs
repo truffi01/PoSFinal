@@ -24,5 +24,19 @@ namespace PoS.Controllers
         {
             return Json(new { data = _unitofWork.Category.GetAll() });
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var objFromDb = _unitofWork.Category.GetFirstOrDefault(u => u.Id == id);
+            if(objFromDb == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+            _unitofWork.Category.Remove(objFromDb);
+            _unitofWork.Save();
+            return Json(new { success = true, message = "Delete successfull" });
+        }
+
     }
 }

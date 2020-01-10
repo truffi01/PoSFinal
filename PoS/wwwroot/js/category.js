@@ -12,8 +12,8 @@ function loadList() {
             "datatype": "json"
         },
         "columns": [
-            { "data": "name", "width": "40%" },
-            { "data": "displayOrder", "width": "40%" },
+            { "data": "name", "width": "30%" },
+            { "data": "displayOrder", "width": "30%" },
             {
                 "data": "id",
                 "render": function (data) {
@@ -22,11 +22,11 @@ function loadList() {
                                     <i class="far fa-edit></i> Edit
                                 </a>
 
-                                <a class="btn btn-danger text-white" style="cussor:pointer; width:100px;">
+                                <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/category/' + ${data})>
                                     <i class="far fa-trash-alt></i> Delete
                                 </a>
                     </div>`;
-                }, "width": "30%"
+                }, "width": "40%"
             }
         ],
         "language": {
@@ -34,4 +34,30 @@ function loadList() {
         },
         "width": "100%"
     });
+}
+
+function Delete(url) {
+    swal({
+        title: "are you sure you want to delete?",
+        text: "You will not be able to restore the data",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                type: 'Delete',
+                url: url,
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        dataTable.ajax.reload();
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            })
+        }
+    })
 }
